@@ -9,7 +9,7 @@ Bit bang I2C communication protocol implementation.
 
 Keeping track of time and setting alarms by controlling the RTC DS1307.
 
-Controls two Inputs and Two Outputs.
+Controls two digitital I/Os.
 
 Inputs are connected to the water level float switches.
 
