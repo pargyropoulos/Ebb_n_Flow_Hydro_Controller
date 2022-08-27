@@ -9,6 +9,8 @@ Controls an LCD 16x2 - HD44780 using a PCF8574 I2C expander.
 
 Keeps track of time and sets alarms by controlling the RTC DS1307.
 
+Get input of water level through two float switches.
+
 Controls two 12v/220v - 10A relays.
 
 Schematic:
