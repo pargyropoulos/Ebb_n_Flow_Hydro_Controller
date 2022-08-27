@@ -18,7 +18,7 @@ Outputs utilize two 12v/220v - 10A relays, for controlling the water pumps.
 I/O are optocoupled for extra protection.
 
 Schematic:
-![image](https://user-images.githubusercontent.com/13944663/187036481-f6258415-b7ce-46d6-8363-843087e4f9e5.png)
+![image](https://github.com/pargyropoulos/Ebb_n_Flow_Hydro_Controller/blob/aaa3a61dfd625b33cdeaa33ab16f7a8a368f2810/PCB/shcematic.png)
 
 Finished Project:
 
