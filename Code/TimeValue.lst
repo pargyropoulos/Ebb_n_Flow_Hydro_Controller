@@ -1,0 +1,824 @@
+MPASM  5.51                     TIMEVALUE.ASM   4-5-2020  21:47:15         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[205]: Found directive in column 1. (include)
+                      00001 include "P16F648A.inc"  ;include the defaults for the chip
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ;  MPASM PIC16F648A processor include
+                      00005 ; 
+                      00006 ;  (c) Copyright 1999-2011 Microchip Technology, All rights reserved
+                      00007 ;==========================================================================
+                      00008 
+Warning[205]: Found directive in column 1. (endm)
+Warning[205]: Found directive in column 1. (endm)
+                      00416         LIST
+Warning[205]: Found directive in column 1. (errorlevel)
+                      00002 errorlevel 2
+  0000                00003 Global TimeValue
+  0000                00004 Global ActiveTimer
+  0000                00005 Global AlarmCHK
+                      00006 
+  0000                00007 Extern MIN
+  0000                00008 Extern HOUR
+  0000                00009 Extern Bcd2Hex
+  0000                00010 Extern LCD_cmd
+  0000                00011 Extern LCD_chr
+  0000                00012 Extern EEPROM_Read
+                      00013 
+                      00014 
+                      00015 
+                      00016 Bank0 udata 
+0000                  00017 Var1 res 1
+0001                  00018 Var2 res 1
+0002                  00019 Var3 res 1
+0003                  00020 Counter res 1
+0004                  00021 TmpVar Res 1
+                      00022 
+                      00023 Bank1 udata
+0000                  00024 CT_H    res 1
+0001                  00025 CT_M    res 1
+0002                  00026 START_H res 1
+0003                  00027 START_M res 1
+0004                  00028 STOP_H  res 1
+0005                  00029 STOP_M  res 1
+0006                  00030 tmp     res 2
+0008                  00031 M_FDelay res 1
+0009                  00032 H_DDelay res 1
+000A                  00033 M_DDelay res 1
+                      00034 
+                      00035 SharedMem Udata
+0000                  00036 Cnt Res 1
+                      00037 
+                      00038 PROG1 Code
+                      00039 
+0000                  00040 ActiveTimer
+MPASM  5.51                     TIMEVALUE.ASM   4-5-2020  21:47:15         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0000   ???? ????      00041 banksel tmp
+0002   3037           00042         MovLw .55 ; Adress of CycleTmrStatus
+0003   2???           00043         Call EEPROM_Read
+0004   1903           00044         BTFSC STATUS,Z
+0005   2???           00045         Goto ReturnIdle
+                      00046 
+                      00047 ;Current Time
+0006   ???? ????      00048         banksel HOUR
+0008   08??           00049         movf HOUR,W
+0009   2???           00050         call Bcd2Hex
+000A   ???? ????      00051         banksel CT_H
+000C   00??           00052         movwf CT_H
+                      00053 
+000D   ???? ????      00054         banksel MIN
+000F   08??           00055         movf MIN,W
+0010   2???           00056         call Bcd2Hex
+0011   ???? ????      00057         banksel CT_M
+0013   00??           00058         movwf CT_M
+                      00059 
+0014   ????           00060         bankisel CT_H
+0015   30??           00061         movlw CT_H
+0016   2???           00062         call TimeValue
+                      00063 
+                      00064 
+0017   30??           00065         movlw START_H
+0018   0084           00066         movwf FSR
+0019   3038           00067         MovLw .56 ; Adress of CycleTmr Start Hour
+001A   2???           00068         Call EEPROM_Read
+001B   0080           00069         movwf INDF
+001C   0A84           00070         incf FSR
+001D   3039           00071         MovLw .57 ; Adress of CycleTmr Start Minute
+001E   2???           00072         Call EEPROM_Read
+001F   0080           00073         movwf INDF
+0020   30??           00074         movlw START_H
+0021   2???           00075         Call TimeValue
+                      00076         
+0022   30??           00077         movlw STOP_H
+0023   0084           00078         movwf FSR
+0024   303A           00079         MovLw .58 ; Adress of CycleTmr Stop Hour
+0025   2???           00080         Call EEPROM_Read
+0026   0080           00081         movwf INDF
+0027   0A84           00082         incf FSR
+0028   303B           00083         MovLw .59 ; Adress of CycleTmr Stop Minute
+0029   2???           00084         Call EEPROM_Read
+002A   0080           00085         movwf INDF
+002B   30??           00086         movlw STOP_H
+002C   2???           00087         Call TimeValue
+                      00088 
+                      00089 
+002D   30??           00090         movlw M_FDelay
+002E   0084           00091         movwf FSR
+002F   303C           00092         MovLw .60 ; Adress of CycleTmr Flood Delay
+0030   2???           00093         Call EEPROM_Read
+MPASM  5.51                     TIMEVALUE.ASM   4-5-2020  21:47:15         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0031   0080           00094         movwf INDF
+                      00095 
+0032   30??           00096         movlw H_DDelay
+0033   0084           00097         movwf FSR
+0034   303D           00098         MovLw .61 ; Adress of CycleTmr Drain Delay
+0035   2???           00099         Call EEPROM_Read
+0036   0080           00100         movwf INDF
+0037   0A84           00101         incf FSR; 
+0038   303E           00102         MovLw .62 ; Adress of CycleTmr Drain Delay
+0039   2???           00103         Call EEPROM_Read
+003A   0080           00104         movwf INDF
+003B   30??           00105         movlw H_DDelay
+003C   2???           00106         Call TimeValue
+                      00107         ;Call ShowTimeValue
+                      00108 
+                      00109         
+003D   ???? ????      00110         banksel STOP_H ; Switch to Bank 1 - SOS
+                      00111 
+003F                  00112 Check1
+003F   1003           00113         BCF STATUS,C
+0040   1103           00114         BCF STATUS,Z
+                      00115 
+0041   08??           00116         movf START_H,W
+0042   02??           00117         subwf CT_H,W
+0043   1C03           00118         btfss STATUS,C ;if Current Time_H < Start_H (+Drain) then Exit and return Drain
+0044   2???           00119         Goto ReturnDrain
+0045   1D03           00120         btfss STATUS,Z
+0046   2???           00121         goto Check2
+0047   08??           00122         movf START_M,W
+0048   02??           00123         subwf CT_M,W
+0049   1C03           00124         btfss STATUS,C
+004A   2???           00125         Goto ReturnDrain
+                      00126 
+004B                  00127 Check2
+004B   08??           00128         movf STOP_H,W
+004C   02??           00129         subwf CT_H,W
+004D   1C03           00130         btfss STATUS,C ;if Current Time_H < Stop_H then CheckFlood
+004E   2???           00131         Goto CheckFlood
+004F   1D03           00132         btfss STATUS,Z
+0050   2???           00133         goto ReturnDrain
+0051   08??           00134         movf STOP_M,W
+0052   02??           00135         subwf CT_M,W
+0053   1C03           00136         btfss STATUS,C
+0054   2???           00137         Goto CheckFlood
+0055   2???           00138         Goto ReturnDrain
+                      00139 
+0056                  00140 CheckFlood
+0056   08??           00141         movf M_FDelay,W
+                      00142 ;       movlw 0x02
+                      00143 
+0057   1903           00144         BtfSC STATUS,Z
+0058   2???           00145         GOTO ReturnDrain
+                      00146 
+MPASM  5.51                     TIMEVALUE.ASM   4-5-2020  21:47:15         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00147 
+0059   07??           00148         addwf START_M,F
+005A   1803           00149         btfsc STATUS,C
+005B   0A??           00150         incf START_H
+                      00151 
+                      00152 
+005C   08??           00153         movf START_H,W
+005D   02??           00154         subwf CT_H,W; Check CurrentTime -(StartTime+Flood Delay). 
+                      00155                                 ;If CurrentTime < StartTime+Flood Delay (...and CurrentTime > StartTime 
+                            from previous check) then Return Flood
+005E   1C03           00156         btfss STATUS,C ;if Carry is zero then result is negative, if it is set then it is either greater
+                             or equal
+005F   2???           00157         Goto ReturnFlood
+                      00158 
+0060   1D03           00159         btfss STATUS,Z ; if the result is zero then check for the minutes
+0061   2???           00160         goto CheckDrain ; else check if it is time for Drain
+0062   08??           00161         movf START_M,W
+0063   02??           00162         subwf CT_M,W
+0064   1C03           00163         btfss STATUS,C
+0065   2???           00164         Goto ReturnFlood
+                      00165 
+0066                  00166 CheckDrain
+                      00167 
+0066   08??           00168         movf M_DDelay,W
+                      00169 ;       movlw 0x3e
+                      00170 
+                      00171 
+0067   07??           00172         addwf START_M,F ; StartTime is now added with both Flood Delay and Drain Delay
+0068   1803           00173         btfsc STATUS,C
+0069   0A??           00174         incf START_H
+                      00175 
+006A   08??           00176         movf H_DDelay,W
+                      00177 ;       movlw 0x00
+                      00178 
+006B   07??           00179         addwf START_H,F ; StartTime is now added with both Flood Delay and Drain Delay
+                      00180 
+006C   08??           00181         movf START_H,W
+006D   02??           00182         subwf CT_H,W
+006E   1C03           00183         btfss STATUS,C
+006F   2???           00184         Goto ReturnDrain
+0070   1D03           00185         btfss STATUS,Z
+0071   2???           00186         goto CheckFlood
+                      00187 
+0072   08??           00188         movf START_M,W
+0073   02??           00189         subwf CT_M,W
+0074   1C03           00190         btfss STATUS,C
+0075   2???           00191         goto ReturnDrain
+0076   2???           00192         goto CheckFlood
+                      00193 
+0077                  00194 ReturnFlood
+0077   1283 1303      00195         banksel 0
+0079   3401           00196         RetlW Flood
+007A                  00197 ReturnDrain
+MPASM  5.51                     TIMEVALUE.ASM   4-5-2020  21:47:15         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+007A   1283 1303      00198         banksel 0
+007C   3400           00199         Retlw Drain
+007D                  00200 ReturnIdle
+007D   1283 1303      00201         banksel 0
+007F   34FF           00202         Retlw Idle
+                      00203 
+                      00204 
+                      00205 
+0080                  00206 TimeValue
+0080   1003           00207         BCF STATUS,C
+0081   1103           00208         BCF STATUS,Z
+                      00209 
+0082   0084           00210         movwf FSR
+0083   0800           00211         movf INDF,W
+0084   1283 1303      00212         banksel 0
+                      00213         ;Call Bcd2Hex
+                      00214 
+0086   00??           00215         movwf Var1
+0087   00??           00216         movwf Var3
+0088   01??           00217         clrf Var2
+                      00218 
+                      00219 
+                      00220 ;Multiply Hours x 60
+                      00221 ;Hours = Hours x 64 - (Hours x 4)
+                      00222 ;thus, 6 RLFs and 4 Subs
+0089   3006           00223         movlw 0x6
+008A   00??           00224         movwf Counter
+008B                  00225 MulLoop
+008B   0D??           00226         rlf Var1 
+008C   0D??           00227         rlf Var2
+008D   1803           00228         btfsc STATUS,C
+008E   0A??           00229         incf Var2
+008F   0B??           00230         decfsz Counter
+0090   2???           00231         goto MulLoop
+                      00232 
+0091   3004           00233         movlw 0x4
+0092   00??           00234         movwf Counter
+0093   08??           00235         movf Var3,W
+0094                  00236 SubLoop
+0094   02??           00237         subwf Var1,F
+0095   1C03           00238         btfss STATUS,C
+0096   03??           00239         decf Var2
+0097   0B??           00240         decfsz Counter
+0098   2???           00241         goto SubLoop
+                      00242         
+                      00243         ;movf MIN,W
+0099   0A84           00244         incf FSR
+009A   0800           00245         movf INDF,W
+                      00246         ;Call Bcd2Hex
+009B   07??           00247         addwf Var1,F
+009C   1803           00248         btfsc STATUS,C
+009D   0A??           00249         incf Var2
+                      00250 
+MPASM  5.51                     TIMEVALUE.ASM   4-5-2020  21:47:15         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+009E   08??           00251         movf Var1,W
+009F   0080           00252         movwf INDF
+00A0   0384           00253         decf FSR
+00A1   08??           00254         movf Var2,W
+00A2   0080           00255         movwf INDF
+                      00256         
+00A3   0008           00257 return
+                      00258 
+                      00259 ;ShowTimeValue
+                      00260 ;       banksel CT_H
+                      00261 ;       movf CT_H,W
+                      00262 ;       banksel Var2
+                      00263 ;       movwf Var2
+                      00264 ;
+                      00265 ;       banksel CT_M
+                      00266 ;       movf CT_M,W
+                      00267 ;       banksel Var1
+                      00268 ;       movwf Var1
+                      00269 ;
+                      00270 ;       movlw LCD_Line1+.11
+                      00271 ;       call LCD_cmd
+                      00272 ;       movf Var2,W
+                      00273 ;       addlw 0x30
+                      00274 ;       call LCD_chr
+                      00275 ;
+                      00276 ;       swapf Var1,W
+                      00277 ;       andlw 0x0f
+                      00278 ;       movwf Var3              
+                      00279 ;
+                      00280 ;       movlw LCD_Line1+.12
+                      00281 ;       call LCD_cmd
+                      00282 ;
+                      00283 ;       movf Var3,W
+                      00284 ;       sublw 0x09
+                      00285 ;       btfss STATUS,C
+                      00286 ;       goto $+5
+                      00287 ;       movf Var3,W
+                      00288 ;       addlw 0x30
+                      00289 ;       call LCD_chr
+                      00290 ;       goto $+4
+                      00291 ;       movf Var3,W
+                      00292 ;       addlw 0x37
+                      00293 ;       call LCD_chr
+                      00294 ;
+                      00295 ;
+                      00296 ;       movf Var1,W
+                      00297 ;       andlw 0x0f
+                      00298 ;       movwf Var3              
+                      00299 ;
+                      00300 ;       movlw LCD_Line1+.13
+                      00301 ;       call LCD_cmd
+                      00302 ;
+                      00303 ;       movf Var3,W
+MPASM  5.51                     TIMEVALUE.ASM   4-5-2020  21:47:15         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00304 ;       sublw 0x09
+                      00305 ;       btfss STATUS,C
+                      00306 ;       goto $+5
+                      00307 ;       movf Var3,W
+                      00308 ;       addlw 0x30
+                      00309 ;       call LCD_chr
+                      00310 ;       return
+                      00311 ;       movf Var3,W
+                      00312 ;       addlw 0x37
+                      00313 ;       call LCD_chr
+                      00314 ;return
+                      00315 
+                      00316 
+00A4                  00317 AlarmCHK
+00A4   01??           00318         clrf Cnt
+00A5   01??           00319         clrf TmpVar
+00A6                  00320 Loop
+                      00321         ;Check if Alarm is Active
+00A6   ???? ????      00322         banksel Cnt
+00A8   3004           00323         movlw 0x04
+00A9   07??           00324         Addwf Cnt,W
+00AA   2???           00325         Call EEPROM_Read
+                      00326 
+00AB   1903           00327         btfsc STATUS,Z
+                      00328         ;If not, check the next timer
+00AC   2???           00329         goto CheckNext
+                      00330 
+00AD   0A??           00331         Incf TmpVar ; if tmpvar stays 0 after all checks then no alarm is active and waterstatus is Idle
+                      00332 
+00AE   08??           00333         movf HOUR,W
+00AF   2???           00334         call Bcd2Hex
+00B0   ???? ????      00335         banksel CT_H
+00B2   00??           00336         movwf CT_H
+                      00337 
+00B3   ???? ????      00338         banksel MIN
+00B5   08??           00339         movf MIN,W
+00B6   2???           00340         call Bcd2Hex
+00B7   ???? ????      00341         banksel CT_M
+00B9   00??           00342         movwf CT_M
+                      00343 
+00BA   ????           00344         bankisel CT_H
+00BB   30??           00345         movlw CT_H
+00BC   2???           00346         call TimeValue
+                      00347 
+                      00348 
+00BD   30??           00349         movlw START_H
+00BE   0084           00350         movwf FSR
+                      00351         ;MovLw .5 ; Adress of CycleTmr Start Hour
+00BF   08??           00352         movf Cnt,W
+00C0   2???           00353         Call EEPROM_Read
+00C1   0080           00354         movwf INDF
+00C2   0A84           00355         incf FSR
+                      00356         ;MovLw .06 ; Adress of CycleTmr Start Minute
+MPASM  5.51                     TIMEVALUE.ASM   4-5-2020  21:47:15         PAGE  8
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00C3   08??           00357         movf Cnt,W
+00C4   3E01           00358         addlw 0x01
+00C5   2???           00359         Call EEPROM_Read
+00C6   0080           00360         movwf INDF
+                      00361 
+00C7   30??           00362         movlw START_H
+00C8   2???           00363         Call TimeValue
+00C9   30??           00364         movlw STOP_H
+00CA   0084           00365         movwf FSR
+                      00366         ;MovLw .07 ; Adress of CycleTmr Stop Hour
+00CB   08??           00367         movf Cnt,W
+00CC   3E02           00368         addlw 0x02
+00CD   2???           00369         Call EEPROM_Read
+00CE   0080           00370         movwf INDF
+00CF   0A84           00371         incf FSR
+                      00372         ;MovLw .08 ; Adress of CycleTmr Stop Minute
+00D0   08??           00373         movf Cnt,W
+00D1   3E03           00374         addlw 0x03
+00D2   2???           00375         Call EEPROM_Read
+00D3   0080           00376         movwf INDF
+00D4   30??           00377         movlw STOP_H
+00D5   2???           00378         Call TimeValue
+                      00379 
+                      00380         ;Call ShowTimeValue
+                      00381 
+00D6   ???? ????      00382         banksel START_H
+                      00383         ;movlw 0x01
+                      00384         ;movwf START_H
+                      00385         ;movlw 0x68
+                      00386         ;movwf START_M
+                      00387         ;movlw 0x01
+                      00388         ;movwf STOP_H
+                      00389         ;movlw 0x6D
+                      00390         ;movwf STOP_M
+                      00391 
+                      00392         
+00D8   08??           00393         movf STOP_H,W
+00D9   02??           00394         subwf CT_H,W
+00DA   1C03           00395         btfss STATUS,C ; if CT_H-STOP_H gives carry then CT_H<STOP_H. Note! os Subtraction, pollarity is
+                             reversed
+00DB   2???           00396         goto CheckFloodTime ; and CARRY is set when C = 0
+00DC   1D03           00397         BTFSS STATUS,Z
+00DD   2???           00398         goto CheckNext
+                      00399         ;goto ReturnDrain
+                      00400 
+00DE   08??           00401         movf STOP_M,W
+00DF   02??           00402         subwf CT_M,W
+00E0   1C03           00403         btfss STATUS,C
+00E1   2???           00404         Goto $+2
+                      00405         ;Goto ReturnDrain
+00E2   2???           00406         goto CheckNext
+                      00407 
+00E3                  00408 CheckFloodTime:
+MPASM  5.51                     TIMEVALUE.ASM   4-5-2020  21:47:15         PAGE  9
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00E3   08??           00409         movf CT_H,W
+00E4   02??           00410         subwf START_H,W
+00E5   1C03           00411         btfss STATUS,C
+00E6   2???           00412         Goto ReturnFlood
+                      00413 
+00E7   1D03           00414         btfss STATUS,Z
+00E8   2???           00415         goto CheckNext
+                      00416         ;Goto ReturnDrain
+00E9   08??           00417         movf CT_M,W
+00EA   02??           00418         subwf START_M,W
+00EB   1C03           00419         btfss STATUS,C
+00EC   2???           00420         Goto ReturnFlood
+                      00421 
+00ED   1D03           00422         btfss STATUS,Z
+00EE   2???           00423         Goto CheckNext
+                      00424         ;Goto ReturnDrain
+00EF   2???           00425         Goto ReturnFlood
+                      00426 
+                      00427 
+00F0                  00428 CheckNext
+00F0   08??           00429         movf Cnt,W
+00F1   3E05           00430         addlw 0x05
+00F2   00??           00431         movwf Cnt
+00F3   3A32           00432         xorlw .50
+00F4   1D03           00433         btfss STATUS,Z
+00F5   2???           00434         goto Loop
+                      00435                                   ; After checking all 10 abs timers
+00F6   08??           00436         movf TmpVar,F ; if TmpVar=0 then no abs timer was ON thus return IDLE, If it is > 1 then one or 
+                            more
+00F7   1D03           00437         btfss STATUS,Z; timers were active but none is triggered, so Return Drain
+00F8   2???           00438         goto ReturnDrain
+00F9   2???           00439         goto ReturnIdle
+                      00440         
+00FA   0008           00441 return
+                      00442 
+                      00443 
+                      00444 end
+MPASM  5.51                     TIMEVALUE.ASM   4-5-2020  21:47:15         PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ADDEN                             00000003
+ADEN                              00000003
+ActiveTimer                       00000000
+AlarmCHK                          000000A4
+BRGH                              00000002
+Bank0                             00000000
+Bcd2Hex                           00000000
+C                                 00000000
+C1INV                             00000004
+C1OUT                             00000006
+C2INV                             00000005
+C2OUT                             00000007
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCPR1                             00000015
+CCPR1H                            00000016
+CCPR1L                            00000015
+CIS                               00000003
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+CMCON                             0000001F
+CMIE                              00000006
+CMIF                              00000006
+CREN                              00000004
+CSRC                              00000007
+CT_H                              00000000
+CT_M                              00000001
+Check1                            0000003F
+Check2                            0000004B
+CheckDrain                        00000066
+CheckFlood                        00000056
+CheckFloodTime                    000000E3
+CheckNext                         000000F0
+Cnt                               00000000
+Counter                           00000003
+DATA_CP_OFF                       00003FFF
+DATA_CP_ON                        00003EFF
+DC                                00000001
+Decimal                           00000001
+DownEnter                         00000050
+Drain                             00000000
+EEADR                             0000009B
+EECON1                            0000009C
+EECON2                            0000009D
+EEDATA                            0000009A
+MPASM  5.51                     TIMEVALUE.ASM   4-5-2020  21:47:15         PAGE 11
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+EEIE                              00000007
+EEIF                              00000007
+EEPROM_Read                       00000000
+F                                 00000001
+FERR                              00000002
+FSR                               00000004
+Flood                             00000001
+GIE                               00000007
+HOUR                              00000000
+H_DDelay                          00000009
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+Idle                              000000FF
+LCD_2Lines                        0000002C
+LCD_4bit                          00000020
+LCD_Blinc                         0000000D
+LCD_Clear                         00000001
+LCD_CursorHome                    00000002
+LCD_DisOff                        00000008
+LCD_DisOn                         0000000C
+LCD_Line1                         00000080
+LCD_Line2                         000000C0
+LCD_Lines                         00000002
+LCD_Underline                     0000000E
+LCD_chr                           00000000
+LCD_cmd                           00000000
+Loop                              000000A6
+MIN                               00000000
+M_DDelay                          0000000A
+M_FDelay                          00000008
+MulLoop                           0000008B
+NOT_BO                            00000000
+NOT_BOD                           00000000
+NOT_BOR                           00000000
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+No                                00000000
+OERR                              00000001
+OPTION_REG                        00000081
+OSCF                              00000003
+OnOff                             00000003
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PIE1                              0000008C
+MPASM  5.51                     TIMEVALUE.ASM   4-5-2020  21:47:15         PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PIR1                              0000000C
+PORTA                             00000005
+PORTB                             00000006
+PR2                               00000092
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RA5                               00000005
+RA6                               00000006
+RA7                               00000007
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+RP0                               00000005
+RP1                               00000006
+RX9                               00000006
+RX9D                              00000000
+ReturnDrain                       0000007A
+ReturnFlood                       00000077
+ReturnIdle                        0000007D
+SPBRG                             00000099
+SPEN                              00000007
+SREN                              00000005
+START_H                           00000002
+START_M                           00000003
+STATUS                            00000003
+STOP_H                            00000004
+STOP_M                            00000005
+SYNC                              00000004
+SubLoop                           00000094
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+MPASM  5.51                     TIMEVALUE.ASM   4-5-2020  21:47:15         PAGE 13
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+T1CKPS1                           00000005
+T1CON                             00000010
+T1OSCEN                           00000003
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISA5                            00000005
+TRISA6                            00000006
+TRISA7                            00000007
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRMT                              00000001
+TX9                               00000006
+TX9D                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+TimeValue                         00000080
+TmpVar                            00000004
+UpEnter                           00000060
+UpEsc                             000000A0
+MPASM  5.51                     TIMEVALUE.ASM   4-5-2020  21:47:15         PAGE 14
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+VR0                               00000000
+VR1                               00000001
+VR2                               00000002
+VR3                               00000003
+VRCON                             0000009F
+VREN                              00000007
+VROE                              00000006
+VRR                               00000005
+Var1                              00000000
+Var2                              00000001
+Var3                              00000002
+W                                 00000000
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Yes                               00000001
+YesNo                             00000002
+Z                                 00000002
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_BOREN_OFF                        00003FBF
+_BOREN_ON                         00003FFF
+_CONFIG                           00002007
+_CP_OFF                           00003FFF
+_CP_ON                            00001FFF
+_DEVID1                           00002006
+_ER_OSC_CLKOUT                    00003FFF
+_ER_OSC_NOCLKOUT                  00003FFE
+_EXTCLK_OSC                       00003FEF
+_HS_OSC                           00003FEE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_INTOSC_OSC_CLKOUT                00003FFD
+_INTOSC_OSC_NOCLKOUT              00003FFC
+_INTRC_OSC_CLKOUT                 00003FFD
+_INTRC_OSC_NOCLKOUT               00003FFC
+_LP_OSC                           00003FEC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+_MCLRE_OFF                        00003FDF
+_MCLRE_ON                         00003FFF
+_PROG1_00E1                       000000E1
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC_CLKOUT                    00003FFF
+_RC_OSC_NOCLKOUT                  00003FFE
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FED
+__16F648A                         00000001
+m_RestoreBank                     
+MPASM  5.51                     TIMEVALUE.ASM   4-5-2020  21:47:15         PAGE 15
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+m_SaveBank                        
+tmp                               00000006
+
+Errors   :     0
+Warnings :     4 reported,    13 suppressed
+Messages :     0 reported,    17 suppressed
+
+
