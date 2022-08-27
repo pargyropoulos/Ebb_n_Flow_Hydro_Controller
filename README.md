@@ -9,9 +9,9 @@ Bit bang I2C communication protocol implementation.
 
 Keeping track of time and setting alarms by controlling the RTC DS1307.
 
-Controls two digitital I/Os.
+Controls two digitital I/Os:
 
-Inputs are connected to the water level float switches.
+Inputs are connected to the water float switches.
 
 Outputs utilize two 12v/220v - 10A relays, for controlling the water pumps.
 
