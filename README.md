@@ -13,7 +13,7 @@ Controls two digitital I/Os:
 
 Inputs are connected to the water float switches.
 
-Outputs utilize two 12v/220v - 10A relays, for controlling the water pumps.
+Outputs utilize two 12v/220v - 10A DIN rail relays, for controlling the water pumps.
 
 I/Os are optocoupled for extra protection.
 
