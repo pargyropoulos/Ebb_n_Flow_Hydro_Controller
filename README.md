@@ -11,7 +11,7 @@ Keeps track of time and sets alarms by controlling the RTC DS1307.
 
 Controls two 12v/220v - 10A relays.
 
-Shcematic:
+Schematic:
 ![image](https://user-images.githubusercontent.com/13944663/187036481-f6258415-b7ce-46d6-8363-843087e4f9e5.png)
 
 Finished Project:
