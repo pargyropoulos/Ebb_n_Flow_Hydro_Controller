@@ -13,4 +13,5 @@ Controls two 12v/220v - 10A relays.
 
 
 ![alt text](https://github.com/pargyropoulos/Ebb_n_Flow_Hydro_Controller/blob/1491756b6b6cf188cc4bb7e6894e098b69e607cc/Pics/All.jpg)
+![image](https://user-images.githubusercontent.com/13944663/187036481-f6258415-b7ce-46d6-8363-843087e4f9e5.png)
 
