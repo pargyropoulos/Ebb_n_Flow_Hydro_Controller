@@ -17,4 +17,4 @@ Schematic:
 ![image](https://user-images.githubusercontent.com/13944663/187036481-f6258415-b7ce-46d6-8363-843087e4f9e5.png)
 
 Finished Project:
-![alt text](https://github.com/pargyropoulos/Ebb_n_Flow_Hydro_Controller/blob/1491756b6b6cf188cc4bb7e6894e098b69e607cc/Pics/All.jpg)
+![alt text](https://github.com/pargyropoulos/Ebb_n_Flow_Hydro_Controller/blob/6df0419a8ad1f117804a3522efc8b418cdfc7c99/Pics/_All.jpg)
