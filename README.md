@@ -5,7 +5,7 @@ A digital hydroponic controller based on PIC16F648A, written exclusively in ASM.
 
 A fully functional multi line menu to navigate through the various functions.
 
-Bit bang I2C communication protocol implementation.
+Bit-bang I2C communication protocol implementation.
 
 Keeping track of time and setting alarms by controlling the RTC DS1307.
 
