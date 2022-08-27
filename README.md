@@ -26,5 +26,7 @@ Finished Project:
 
 ![image](https://github.com/pargyropoulos/Ebb_n_Flow_Hydro_Controller/blob/6df0419a8ad1f117804a3522efc8b418cdfc7c99/Pics/_All.jpg)
 
-Buckets and Tank LayoutQ
+
+Buckets and Tank Layout:
+
 ![image](https://github.com/pargyropoulos/Ebb_n_Flow_Hydro_Controller/blob/2f6e6c48ebfd308566dc95ba49b956986689cf70/Pics/BucketsLayout.jpg)
