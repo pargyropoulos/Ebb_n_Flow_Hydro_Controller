@@ -17,6 +17,8 @@ Outputs utilize two 12v/220v - 10A relays, for controlling the water pumps.
 
 I/O are optocoupled for extra protection.
 
+Upload HEX file uising Pickit2/Pickit3 through the onboard ICSP header.
+
 Schematic:
 ![image](https://github.com/pargyropoulos/Ebb_n_Flow_Hydro_Controller/blob/aaa3a61dfd625b33cdeaa33ab16f7a8a368f2810/PCB/shcematic.png)
 
