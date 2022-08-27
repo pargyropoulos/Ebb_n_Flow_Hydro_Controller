@@ -28,7 +28,7 @@ Schematic:
 
 Finished Project:
 
-![image](https://github.com/pargyropoulos/Ebb_n_Flow_Hydro_Controller/blob/6df0419a8ad1f117804a3522efc8b418cdfc7c99/Pics/_All.jpg)
+![image](https://github.com/pargyropoulos/Ebb_n_Flow_Hydro_Controller/blob/306307deb1b9d581e51127249a2c08612bfb950b/Pics/Upper_side.jpg)
 
 
 Buckets and Tank Layout:
