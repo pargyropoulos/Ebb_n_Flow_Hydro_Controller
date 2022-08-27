@@ -19,6 +19,9 @@ I/Os are optocoupled for extra protection.
 
 Upload HEX file using Pickit2/Pickit3 through the onboard ICSP header.
 
+Menu layout:
+![image](https://github.com/pargyropoulos/Ebb_n_Flow_Hydro_Controller/blob/e2949b570f0ded50d0145d5d1af71eb2ecad39cb/Pics/menu_layout.png)
+
 Schematic:
 ![image](https://github.com/pargyropoulos/Ebb_n_Flow_Hydro_Controller/blob/aaa3a61dfd625b33cdeaa33ab16f7a8a368f2810/PCB/shcematic.png)
 
