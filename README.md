@@ -28,11 +28,3 @@ Menu layout:
 Schematic:
 ![image](https://github.com/pargyropoulos/Ebb_n_Flow_Hydro_Controller/blob/aaa3a61dfd625b33cdeaa33ab16f7a8a368f2810/PCB/shcematic.png)
 
-Finished Project:
-
-![image](https://github.com/pargyropoulos/Ebb_n_Flow_Hydro_Controller/blob/306307deb1b9d581e51127249a2c08612bfb950b/Pics/Upper_side.jpg)
-
-
-Buckets and Tank Layout:
-
-![image](https://github.com/pargyropoulos/Ebb_n_Flow_Hydro_Controller/blob/77c5ad3ff5428256734e4bb2434e1d09b99e3ed1/Pics/Buckets_Layout.jpg)
