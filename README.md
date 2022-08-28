@@ -1,7 +1,7 @@
 # Ebb & Flow Hydroponic Controller
 ## A digital hydroponic controller based on PIC16F648A microcontroller.
 
-Code was written exclusively in ASM a decade ago, making it a legacy project at the early beginning. Code in no longer maintained.
+Code was written exclusively in ASM a decade ago, making it a legacy project at the early beginning. Code is no longer maintained.
 
 * Controls an LCD 16x2 - HD44780 through a PCF8574 I2C expander. LCD contrast is digitaly adjusted through PWM modulation.
 
