@@ -1,5 +1,5 @@
 # Ebb & Flow Hydroponic Controller
-## A digital hydroponic controller based on PIC16F648A microcontroller @ 4 Mhz.
+## A digital hydroponic controller based on PIC16F648A microcontroller clocked @ 4 Mhz.
 
 Code was written exclusively in ASM a decade ago, making it a legacy project at the early beginning. Code is no longer maintained.
 
