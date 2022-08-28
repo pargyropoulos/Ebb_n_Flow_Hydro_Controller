@@ -9,6 +9,8 @@ Bit-bang I2C communication protocol implementation.
 
 Keeping track of time and setting alarms by controlling the RTC DS1307.
 
+Offers a cycle timer and ten absolute timers for scheduling flood and drain cycles.
+
 Controls two separate inputs and outputs:
 
 Inputs are connected to the water float switches.
