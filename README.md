@@ -1,13 +1,15 @@
-# Ebb_n_Flow_Hydro_Controller
-A digital hydroponic controller based on PIC16F648A microcontroller. Code was written exclusively in ASM a decade ago.
+# Ebb & Flow Hydroponic Controller
+## A digital hydroponic controller based on PIC16F648A microcontroller
 
-4-Bit control of an LCD 16x2 - HD44780 using a PCF8574 I2C expander. LCD contrast is digitaly adjusted through PWM modulation.
+Code was written exclusively in ASM a decade ago.
 
-A fully functional multi line menu to navigate through the various functions.
+Controls an LCD 16x2 - HD44780 through a PCF8574 I2C expander. LCD contrast is digitaly adjusted through PWM modulation.
 
-Bit-bang I2C communication protocol implementation.
+Offers a fully functional multi line menu to navigate through the various functions.
 
-Keeping track of time and setting alarms by controlling the RTC DS1307.
+Implements I2C communication protocol through Bit-banging.
+
+Keeps track of time and sets alarms by controlling the RTC DS1307.
 
 Offers a cycle timer and ten absolute timers for scheduling flood and drain cycles.
 
