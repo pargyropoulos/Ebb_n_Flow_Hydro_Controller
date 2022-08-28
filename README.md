@@ -7,7 +7,7 @@ Code was written exclusively in ASM a decade ago, making it a legacy project at 
 
 * Offers a fully functional multi line menu to navigate through the various functions.
 
-* Implements I2C communication protocol through Bit-banging.
+* Implements I2C communication protocol through bit-banging.
 
 * Keeps track of time and sets alarms by controlling the RTC DS1307.
 
