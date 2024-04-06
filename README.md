@@ -9,7 +9,7 @@ Code was written exclusively in ASM a decade ago, making it a legacy project at 
 
 * Implements I2C communication protocol through bit-banging.
 
-* Keeps track of time and sets alarms by controlling the RTC DS1307.
+* Keeps track of time and sets alarms by controlling the RTC DS1307 through I2C.
 
 * Offers a cycle timer and ten absolute timers for scheduling flood and drain cycles.
 
