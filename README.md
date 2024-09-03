@@ -29,3 +29,5 @@ Menu layout:
 Schematic:
 ![image](https://github.com/pargyropoulos/Ebb_n_Flow_Hydro_Controller/blob/aaa3a61dfd625b33cdeaa33ab16f7a8a368f2810/PCB/shcematic.png)
 
+Controller:
+![image](https://github.com/pargyropoulos/Ebb_n_Flow_Hydro_Controller/blob/9ff3d1329e1bc9a0977c6857cad7bdf9199440c7/Pics/Upper_side.jpg)
