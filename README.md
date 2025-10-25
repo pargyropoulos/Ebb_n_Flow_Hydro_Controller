@@ -35,3 +35,9 @@ CNC Machining:
 
 Controller:
 ![image](https://github.com/pargyropoulos/Ebb_n_Flow_Hydro_Controller/blob/9ff3d1329e1bc9a0977c6857cad7bdf9199440c7/Pics/Upper_side.jpg)
+
+[![Follow on Hackaday](https://img.shields.io/badge/Hackaday-Follow-black?logo=hackaday)](https://hackaday.io/project/202870-flood-and-drain-hydroponic-controller)  
+
+![GitHub watchers](https://img.shields.io/github/watchers/pargyropoulos/Ebb_n_Flow_Hydro_Controller?style=social)
+![GitHub stars](https://img.shields.io/github/stars/pargyropoulos/Ebb_n_Flow_Hydro_Controller?style=social)
+
